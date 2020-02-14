@@ -138,6 +138,11 @@
 							</div>
 					<?php } ?>
 		</div>
+		<div class="container text-justify">
+			<hr>
+			<h1 align="center">Rules</h1>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed elit non est euismod vehicula. Ut egestas, tellus nec hendrerit accumsan, turpis nulla rhoncus augue, ut pretium arcu urna in lectus. Curabitur a imperdiet justo, vitae aliquet lectus. Integer vitae massa suscipit, malesuada erat laoreet, sollicitudin odio. Nulla facilisi. Proin nibh tellus, vestibulum et nunc sed, iaculis ultricies turpis. Nullam in libero tellus. Morbi sagittis justo accumsan, pulvinar arcu ac, fermentum urna.</p>
+		</div>
 	</div>
 </body>
 </html>
