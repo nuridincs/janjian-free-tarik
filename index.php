@@ -25,6 +25,7 @@
     <title>Janjian Free Tarik</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 		<script src="assets/js/jquery.js"></script>
+		<script src="assets/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -51,7 +52,7 @@
 		<div class="form-group">
 			<label for="jam">Jam:</label>
 			<div class="row" id='post-result'>
-			<?php 
+			<?php
 				while ($row = mysqli_fetch_object($query)) {
 					$disabled = 'disabled';
 					if ($row->status === 'available') {
@@ -68,12 +69,13 @@
 			<?php } ?>
 			</div>
 		</div>
-		<button type="submit" name="submit" id="submit" class="btn btn-primary btn-block">Submit</button>
+		<button type="submit" name="submit" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal">Submit</button>
 		<hr>
 		<h1 align="center">List Tarik</h1>
 		<div class="row" align="center">
 				<div class="col">
 					<h4>Hari ini</h4>
+					<div><?= date('d/m/Y') ?></div>
 					<hr>
 					<?php
 						$sqlCurdate = "SELECT *,
@@ -108,6 +110,7 @@
 				</div>
 				<div class="col">
 					<h4>Besok</h4>
+					<div><?= $datetime->format('d/m/Y') ?></div>
 					<hr>
 					<?php
 						$sqlTomorrow = "SELECT *,
@@ -143,7 +146,51 @@
 			<h1 align="center">Rules</h1>
 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed elit non est euismod vehicula. Ut egestas, tellus nec hendrerit accumsan, turpis nulla rhoncus augue, ut pretium arcu urna in lectus. Curabitur a imperdiet justo, vitae aliquet lectus. Integer vitae massa suscipit, malesuada erat laoreet, sollicitudin odio. Nulla facilisi. Proin nibh tellus, vestibulum et nunc sed, iaculis ultricies turpis. Nullam in libero tellus. Morbi sagittis justo accumsan, pulvinar arcu ac, fermentum urna.</p>
 		</div>
-	</div>
+		<div class="modal" id="myModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">Submit Data</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+						<p class="text-justify"> Apakah Anda yakin untuk book di tanggal & jam tersebut? Tanggal & Jam yang sudah dipilih tidak dapat diubah,kecuali ada persetujuan untuk tukeran jam</p>
+					</div>
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="submit" data-dismiss="modal">Submit</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- The Modal -->
+		<div class="modal fade" id="modalPassword">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">Masukan Password</h4>
+						<!-- <button type="button" class="close" data-dismiss="modal">×</button> -->
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+						<input type="password" class="form-control" required name="password" id="password">
+					</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="submitPassword" data-dismiss="modal">Submit</button>
+						<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+					</div>
+
+				</div>
+			</div>
+		</div>
 </body>
 </html>
 
@@ -152,6 +199,46 @@
 		setTimeout(() => {
 			location.reload();
 		}, 60000);
+
+		const user = window.localStorage.getItem('user');
+		console.log('user', user);
+		if (!user) {
+			$("#modalPassword").modal({
+        backdrop: 'static',
+				keyboard: false
+			});
+		}
+
+		$('#submitPassword').click(function () {
+			const data = {
+				password: $('input[name=password]').val()
+			}
+
+			if (data.password === 'admin123') {
+				window.localStorage.setItem('user', true);
+				$('#modalPassword').modal('hide');
+			} else {
+				alert('Password tidak sesuai');
+
+				return false;
+			}
+
+			// fetch('services/cekPassword.php', {
+			// 	headers: {
+			// 		'Accept': 'application/json',
+			// 		'Content-Type': 'application/json'
+			// 	},
+			// 	method: 'POST',
+			// 	body: JSON.stringify({data})
+			// })
+			// .then((response) => {
+			// 	$('#modalPassword').modal('hide');
+			// })
+			// .then((data) => {
+			// 	$('#modalPassword').modal('hide');;
+			// });
+		});
+
 		$('[name=date]').click(function () {
 			const date = this.value;
 
