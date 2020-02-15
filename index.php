@@ -1,7 +1,5 @@
 <?php
-	date_default_timezone_set("Asia/Bangkok");
-	$db_handle = mysqli_connect("localhost","root","");
-	mysqli_select_db($db_handle, "db_janjian_free_tarik");
+	include "config/database.php";
 
 	$sql = "SELECT app_time.id, app_time.label, app_tarik.id_time, app_tarik.name_line, app_tarik.date_label, app_tarik.date,
 						CASE
@@ -201,7 +199,7 @@
 		}, 60000);
 
 		const user = window.localStorage.getItem('user');
-		console.log('user', user);
+
 		if (!user) {
 			$("#modalPassword").modal({
         backdrop: 'static',
@@ -214,29 +212,33 @@
 				password: $('input[name=password]').val()
 			}
 
-			if (data.password === 'admin123') {
-				window.localStorage.setItem('user', true);
-				$('#modalPassword').modal('hide');
-			} else {
-				alert('Password tidak sesuai');
+			if (data.password === '') {
+				alert('Password wajib diisi!');
 
 				return false;
 			}
 
-			// fetch('services/cekPassword.php', {
-			// 	headers: {
-			// 		'Accept': 'application/json',
-			// 		'Content-Type': 'application/json'
-			// 	},
-			// 	method: 'POST',
-			// 	body: JSON.stringify({data})
-			// })
-			// .then((response) => {
-			// 	$('#modalPassword').modal('hide');
-			// })
-			// .then((data) => {
-			// 	$('#modalPassword').modal('hide');;
-			// });
+			fetch('services/getUser.php', {
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({password:data.password})
+			})
+			.then((response) => {
+				return response.json();
+			})
+			.then((data) => {
+				if (data.status) {
+					window.localStorage.setItem('user', true);
+					$('#modalPassword').modal('hide');
+				} else {
+					alert('Password tidak sesuai');
+
+					location.reload();
+				}
+			});
 		});
 
 		$('[name=date]').click(function () {

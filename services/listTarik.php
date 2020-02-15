@@ -1,7 +1,5 @@
 <?php
-	date_default_timezone_set("Asia/Bangkok");
-	$db_handle = mysqli_connect("localhost","root","");
-  mysqli_select_db($db_handle, "db_janjian_free_tarik");
+  include "../config/database.php";
 
   $json = file_get_contents('php://input');
   $data = json_decode($json);
