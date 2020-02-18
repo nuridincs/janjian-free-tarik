@@ -19,8 +19,8 @@
             LEFT JOIN app_tarik
               ON app_tarik.id_time = app_time.id
                 AND app_tarik.date = $condition
-          GROUP BY  app_time.id
-          ORDER BY  app_time.id ASC";
+          GROUP BY app_time.id
+          ORDER BY app_time.keterangan='today' DESC, app_time.id ASC";
 
   $query = mysqli_query($db_handle, $sql);
 

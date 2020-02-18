@@ -10,8 +10,8 @@
 						LEFT JOIN app_tarik
 							ON app_tarik.id_time = app_time.id
 								AND app_tarik.date = Curdate()
-					GROUP BY  app_time.id
-					ORDER BY  app_time.id ASC";
+					GROUP BY app_time.id
+					ORDER BY app_time.keterangan='today' DESC, app_time.id ASC";
 	$query = mysqli_query($db_handle, $sql);
 ?>
 
@@ -34,16 +34,20 @@
 			<input type="lineName" class="form-control" required placeholder="Masukan Nama Line" name="lineName" id="lineName" id="lineName">
 		</div>
 		<div class="form-group">
-			<?php $datetime = new DateTime('tomorrow'); ?>
+			<?php
+				$datetime = new DateTime('tomorrow');
+				$interval1day = new DateTime('tomorrow');
+				$interval1day->modify('+1 day');
+			?>
 			<label for="tanggal">Tanggal:</label>
 			<div class="form-check">
 				<label class="form-check-label">
-					<input type="radio" class="form-check-input" required name="date" value="today" checked> Hari ini (<?php echo date('d/m/Y') ?>)
+					<input type="radio" class="form-check-input" required name="date" value="today" checked> Hari ini (<?php echo date('d/m/Y')." - ". $datetime->format('d/m/Y') ?>)
 				</label>
 			</div>
 			<div class="form-check">
 				<label class="form-check-label">
-					<input type="radio" class="form-check-input" required name="date" id="tomorrow" value="tomorrow"> Besok (<?php echo $datetime->format('d/m/Y'); ?>)
+					<input type="radio" class="form-check-input" required name="date" id="tomorrow" value="tomorrow"> Besok (<?php echo $datetime->format('d/m/Y'). " - ".$interval1day->format('d/m/Y'); ?>)
 				</label>
 			</div>
 		</div>
@@ -85,13 +89,21 @@
 														LEFT JOIN app_tarik
 															ON app_tarik.id_time = app_time.id AND app_tarik.date = curdate()
 															GROUP BY app_time.id
-													ORDER BY app_time.id ASC";
+													ORDER BY app_time.keterangan='today' DESC, app_time.id ASC";
 						$queryCurdate = mysqli_query($db_handle, $sqlCurdate);
+						$countCurdate = 1;
 						while ($rowData = mysqli_fetch_object($queryCurdate)) {
 							if ($rowData->status === 'available') {
 								$badge = "success";
 							} else {
 								$badge = "danger";
+							}
+
+							if ($rowData->keterangan === 'tomorrow') {
+								if ($countCurdate === 1) {
+									echo "<hr>".$datetime->format('d/m/Y')."<hr>";
+								}
+								$countCurdate++;
 							}
 					?>
 							<div class="row">
@@ -120,13 +132,22 @@
 															LEFT JOIN app_tarik
 																ON app_tarik.id_time = app_time.id AND app_tarik.date = curdate() + interval 1 day
 																GROUP BY app_time.id
-														ORDER BY app_time.id ASC";
+														ORDER BY app_time.keterangan='today' DESC, app_time.id ASC";
 						$queryTomorrow = mysqli_query($db_handle, $sqlTomorrow);
+						$count = 1;
 						while ($rowData = mysqli_fetch_object($queryTomorrow)) {
 							if ($rowData->status === 'available') {
 								$badge = "success";
 							} else {
 								$badge = "danger";
+							}
+
+							if ($rowData->keterangan === 'tomorrow') {
+								if ($count === 1) {
+									$datetime->modify('+1 day');
+									echo "<hr>".$datetime->format('d/m/Y')."<hr>";
+								}
+								$count++;
 							}
 					?>
 							<div class="row">
@@ -165,25 +186,20 @@
 			</div>
 		</div>
 
-		<!-- The Modal -->
 		<div class="modal fade" id="modalPassword">
 			<div class="modal-dialog">
 				<div class="modal-content">
 
-					<!-- Modal Header -->
 					<div class="modal-header">
 						<h4 class="modal-title">Masukan Password</h4>
-						<!-- <button type="button" class="close" data-dismiss="modal">×</button> -->
 					</div>
-					<!-- Modal body -->
+
 					<div class="modal-body">
 						<input type="password" class="form-control" required name="password" id="password">
 					</div>
 
-					<!-- Modal footer -->
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" id="submitPassword" data-dismiss="modal">Submit</button>
-						<!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
 					</div>
 
 				</div>

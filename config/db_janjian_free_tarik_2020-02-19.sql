@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.27)
 # Database: db_janjian_free_tarik
-# Generation Time: 2020-02-15 15:03:40 +0000
+# Generation Time: 2020-02-18 23:44:55 +0000
 # ************************************************************
 
 
@@ -51,42 +51,42 @@ DROP TABLE IF EXISTS `app_time`;
 CREATE TABLE `app_time` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `label` char(6) DEFAULT NULL,
+  `keterangan` varchar(20) NOT NULL DEFAULT 'today',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `app_time` WRITE;
 /*!40000 ALTER TABLE `app_time` DISABLE KEYS */;
 
-INSERT INTO `app_time` (`id`, `label`)
+INSERT INTO `app_time` (`id`, `label`, `keterangan`)
 VALUES
-	(1,'00.00'),
-	(2,'01.00'),
-	(3,'02.00'),
-	(4,'03.00'),
-	(5,'04.00'),
-	(6,'05.00'),
-	(7,'06.00'),
-	(8,'07.00'),
-	(9,'08.00'),
-	(10,'09.00'),
-	(11,'10.00'),
-	(12,'11.00'),
-	(13,'12.00'),
-	(14,'13.00'),
-	(15,'14.00'),
-	(16,'15.00'),
-	(17,'16.00'),
-	(18,'17.00'),
-	(19,'18.00'),
-	(20,'19.00'),
-	(21,'20.00'),
-	(22,'21.00'),
-	(23,'22.00'),
-	(24,'23.00');
+	(1,'00.00','tomorrow'),
+	(2,'01.00','tomorrow'),
+	(3,'02.00','tomorrow'),
+	(4,'03.00','tomorrow'),
+	(5,'04.00','tomorrow'),
+	(6,'05.00','today'),
+	(7,'06.00','today'),
+	(8,'07.00','today'),
+	(9,'08.00','today'),
+	(10,'09.00','today'),
+	(11,'10.00','today'),
+	(12,'11.00','today'),
+	(13,'12.00','today'),
+	(14,'13.00','today'),
+	(15,'14.00','today'),
+	(16,'15.00','today'),
+	(17,'16.00','today'),
+	(18,'17.00','today'),
+	(19,'18.00','today'),
+	(20,'19.00','today'),
+	(21,'20.00','today'),
+	(22,'21.00','today'),
+	(23,'22.00','today'),
+	(24,'23.00','today');
 
 /*!40000 ALTER TABLE `app_time` ENABLE KEYS */;
 UNLOCK TABLES;
-
 
 # Dump of table app_tarik
 # ------------------------------------------------------------
@@ -111,7 +111,11 @@ INSERT INTO `app_tarik` (`id`, `id_time`, `name_line`, `date_label`, `date`)
 VALUES
 	(11,14,'ncs','today','2020-02-14'),
 	(12,22,'ncs 13','today','2020-02-15'),
-	(13,1,'zibran','tomorrow','2020-02-16');
+	(13,1,'zibran','tomorrow','2020-02-16'),
+	(14,3,'ncs','today','2020-02-19'),
+	(15,1,'idin','tomorrow','2020-02-20'),
+	(16,15,'bejo','today','2020-02-19'),
+	(17,24,'dewi','tomorrow','2020-02-20');
 
 /*!40000 ALTER TABLE `app_tarik` ENABLE KEYS */;
 UNLOCK TABLES;
